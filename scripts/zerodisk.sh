@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# an ugly hack - if virtio is detected don't do anything
-if [ `lsmod | grep virtio| wc -l` -gt 0 ]
-then
-  exit 0
-fi
+test x`facter virtual` != xphysical || exit 0
+test x`facter virtual` != xkvm || exit 0 # ugly hack for QCOW2 swelling too much
 
 # Zero out the free space to save space in the final image:
 dd if=/dev/zero of=/EMPTY bs=1M
