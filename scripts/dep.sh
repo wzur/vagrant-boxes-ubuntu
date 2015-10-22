@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Setup the the box. This runs as root
+export DEBIAN_FRONTEND=noninteractive
 
 apt-get -y update
 
