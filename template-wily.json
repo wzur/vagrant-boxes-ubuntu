@@ -1,0 +1,205 @@
+{
+    "description": "Create Vagrant boxes for Ubuntu 15.10 (wily) 64bit",
+    "push": {
+      "name": "",
+      "vcs": true
+    },
+    "variables": {
+        "atlas_username": "{{env `ATLAS_USERNAME`}}",
+        "atlas_name": "{{env `ATLAS_NAME`}}",
+        "atlas_token": "{{env `ATLAS_TOKEN`}}",
+        "version": "0.0.1",
+        "iso_checksum": "fb4eef05edcabfc5cccd4cb44f3f9b48",
+        "iso_checksum_type": "md5",
+        "iso_url": "http://releases.ubuntu.com/wily/ubuntu-15.10-server-amd64.iso"
+    },
+    "provisioners": [
+        {
+            "type": "shell",
+            "scripts": [
+                "scripts/base.sh",
+                "scripts/virtualbox.sh",
+                "scripts/vmware.sh",
+                "scripts/vagrant.sh",
+                "scripts/dep.sh",
+                "scripts/cleanup.sh",
+                "scripts/zerodisk.sh"
+            ],
+            "override": {
+                "virtualbox-iso": {
+                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+                },
+                "qemu": {
+                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+                },
+                "vmware-iso": {
+                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+                }
+            }
+        }
+    ],
+    "builders": [
+        {
+            "type": "virtualbox-iso",
+            "boot_command": [
+                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "/install/vmlinuz<wait>",
+                " noapic<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+                " debian-installer=en_US<wait>",
+                " auto<wait>",
+                " locale=en_US<wait>",
+                " kbd-chooser/method=us<wait>",
+                " hostname={{ .Name }}<wait>",
+                " fb=false<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " keyboard-configuration/modelcode=SKIP<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " -- <wait>",
+                "<enter><wait>"
+            ],
+            "boot_wait": "10s",
+            "disk_size": 8192,
+            "guest_os_type": "Ubuntu_64",
+            "http_directory": "http",
+            "iso_checksum": "{{ user `iso_checksum`}}",
+            "iso_checksum_type": "{{ user `iso_checksum_type` }}",
+            "iso_url": "{{ user `iso_url` }}",
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "10000s",
+            "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'",
+            "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+            "virtualbox_version_file": ".vbox_version"
+        },
+        {
+            "type": "qemu",
+            "format": "qcow2",
+            "accelerator": "kvm",
+            "boot_command": [
+                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "/install/vmlinuz<wait>",
+                " noapic<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+                " debian-installer=en_US<wait>",
+                " auto<wait>",
+                " locale=en_US<wait>",
+                " kbd-chooser/method=us<wait>",
+                " hostname={{ .Name }}<wait>",
+                " fb=false<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " keyboard-configuration/modelcode=SKIP<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " -- <wait>",
+                "<enter><wait>"
+            ],
+            "boot_wait": "2s",
+            "disk_size": 8192,
+            "http_directory": "http",
+            "iso_checksum": "{{ user `iso_checksum`}}",
+            "iso_checksum_type": "{{ user `iso_checksum_type` }}",
+            "iso_url": "{{ user `iso_url` }}",
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "10000s",
+            "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'"
+        },
+        {
+            "type": "vmware-iso",
+            "boot_command": [
+                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "/install/vmlinuz<wait>",
+                " noapic<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+                " debian-installer=en_US<wait>",
+                " auto<wait>",
+                " locale=en_US<wait>",
+                " kbd-chooser/method=us<wait>",
+                " hostname={{ .Name }}<wait>",
+                " fb=false<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " keyboard-configuration/modelcode=SKIP<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " -- <wait>",
+                "<enter><wait>"
+            ],
+            "boot_wait": "10s",
+            "disk_size": 8192,
+            "guest_os_type": "Ubuntu-64",
+            "http_directory": "http",
+            "iso_checksum": "{{ user `iso_checksum`}}",
+            "iso_checksum_type": "{{ user `iso_checksum_type` }}",
+            "iso_url": "{{ user `iso_url` }}",
+            "skip_compaction": true,
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "10000s",
+            "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'",
+            "tools_upload_flavor": "linux"
+        }
+    ],
+    "post-processors": [
+        [{
+            "type": "vagrant",
+            "output": "ubuntu15.10_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
+            "keep_input_artifact": false
+        },
+        {
+            "type": "atlas",
+            "token": "{{user `atlas_token`}}",
+            "only": ["vmware-iso"],
+            "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+            "artifact_type": "vagrant.box",
+            "metadata": {
+                "provider": "vmware_desktop",
+                "description": "Base Ubuntu Wily with guest addition (64bit)",
+                "version": "{{user `version`}}"
+            }
+        },
+        {
+            "type": "atlas",
+            "token": "{{user `atlas_token`}}",
+            "only": ["qemu"],
+            "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+            "artifact_type": "vagrant.box",
+            "metadata": {
+                "provider": "libvirt",
+                "description": "Base Ubuntu Wily (64bit)",
+                "version": "{{user `version`}}"
+            }
+        },
+        {
+            "type": "atlas",
+            "token": "{{user `atlas_token`}}",
+            "only": ["virtualbox-iso"],
+            "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+            "artifact_type": "vagrant.box",
+            "metadata": {
+                "provider": "virtualbox",
+                "description": "Base Ubuntu Wily with guest addition for VirtualBox (64bit)",
+                "version": "{{user `version`}}"
+            }
+        }]
+    ]
+}
