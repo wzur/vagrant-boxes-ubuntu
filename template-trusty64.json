@@ -121,7 +121,7 @@
     "post-processors": [
         [{
             "type": "vagrant",
-            "output": "ubuntu14.04-64_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
+            "output": "ubuntu64-14.04_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
             "keep_input_artifact": false
         },
         {

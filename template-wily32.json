@@ -165,7 +165,7 @@
     "post-processors": [
         [{
             "type": "vagrant",
-            "output": "ubuntu15.10-64_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
+            "output": "ubuntu32-15.10_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
             "keep_input_artifact": false
         },
         {
