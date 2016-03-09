@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
+
 # Delete all Linux headers
 dpkg --list \
   | awk '{ print $2 }' \
@@ -39,7 +41,7 @@ apt-get -y purge ppp pppconfig pppoeconf;
 # Delete oddities
 apt-get -y purge popularity-contest;
 
-apt-get -y autoremove;
+apt-get -y --purge autoremove;
 apt-get -y clean;
 
 rm -f VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?;

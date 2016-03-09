@@ -1,5 +1,5 @@
 {
-    "description": "Create Vagrant boxes for Ubuntu 15.10 (wily) 32bit",
+    "description": "Create Vagrant boxes for Ubuntu 15.04 (vivid) 64bit",
     "push": {
       "name": "",
       "vcs": true
@@ -8,10 +8,10 @@
         "atlas_username": "{{env `ATLAS_USERNAME`}}",
         "atlas_name": "{{env `ATLAS_NAME`}}",
         "atlas_token": "{{env `ATLAS_TOKEN`}}",
-        "version": "0.0.2",
-        "iso_checksum": "0d9ee8b0b0205a8487d6ed8785ee63a8",
+        "version": "0.0.1",
+        "iso_checksum": "487f4a81f22f8597503db3d51a1b502e",
         "iso_checksum_type": "md5",
-        "iso_url": "http://releases.ubuntu.com/wily/ubuntu-15.10-server-i386.iso"
+        "iso_url": "http://releases.ubuntu.com/vivid/ubuntu-15.04-server-amd64.iso"
     },
     "provisioners": [
         {
@@ -42,32 +42,17 @@
         {
             "type": "virtualbox-iso",
             "boot_command": [
-                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "/install/vmlinuz<wait>",
-                " noapic<wait>",
-                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
-                " debian-installer=en_US<wait>",
-                " auto<wait>",
-                " locale=en_US<wait>",
-                " kbd-chooser/method=us<wait>",
-                " hostname={{ .Name }}<wait>",
-                " fb=false<wait>",
-                " debconf/frontend=noninteractive<wait>",
-                " keyboard-configuration/modelcode=SKIP<wait>",
-                " keyboard-configuration/layout=USA<wait>",
-                " keyboard-configuration/variant=USA<wait>",
-                " console-setup/ask_detect=false<wait>",
-                " initrd=/install/initrd.gz<wait>",
-                " net.ifnames=0<wait>",
-                " -- <wait>",
-                "<enter><wait>"
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+                "hostname={{ .Name }} ",
+                "fb=false debconf/frontend=noninteractive ",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+                "initrd=/install/initrd.gz -- <enter>"
             ],
             "boot_wait": "10s",
             "disk_size": 8192,
-            "guest_os_type": "Ubuntu",
+            "guest_os_type": "Ubuntu_64",
             "http_directory": "http",
             "iso_checksum": "{{ user `iso_checksum`}}",
             "iso_checksum_type": "{{ user `iso_checksum_type` }}",
@@ -85,28 +70,14 @@
             "format": "qcow2",
             "accelerator": "kvm",
             "boot_command": [
-                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "/install/vmlinuz<wait>",
-                " noapic<wait>",
-                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
-                " debian-installer=en_US<wait>",
-                " auto<wait>",
-                " locale=en_US<wait>",
-                " kbd-chooser/method=us<wait>",
-                " hostname={{ .Name }}<wait>",
-                " fb=false<wait>",
-                " debconf/frontend=noninteractive<wait>",
-                " keyboard-configuration/modelcode=SKIP<wait>",
-                " keyboard-configuration/layout=USA<wait>",
-                " keyboard-configuration/variant=USA<wait>",
-                " console-setup/ask_detect=false<wait>",
-                " initrd=/install/initrd.gz<wait>",
-                " net.ifnames=0<wait>",
-                " -- <wait>",
-                "<enter><wait>"
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+                "hostname={{ .Name }} ",
+                "fb=false debconf/frontend=noninteractive ",
+                "grub-installer/bootdev=/dev/vda ",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+                "initrd=/install/initrd.gz -- <enter>"
             ],
             "boot_wait": "2s",
             "disk_size": 8192,
@@ -123,32 +94,17 @@
         {
             "type": "vmware-iso",
             "boot_command": [
-                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-                "/install/vmlinuz<wait>",
-                " noapic<wait>",
-                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
-                " debian-installer=en_US<wait>",
-                " auto<wait>",
-                " locale=en_US<wait>",
-                " kbd-chooser/method=us<wait>",
-                " hostname={{ .Name }}<wait>",
-                " fb=false<wait>",
-                " debconf/frontend=noninteractive<wait>",
-                " keyboard-configuration/modelcode=SKIP<wait>",
-                " keyboard-configuration/layout=USA<wait>",
-                " keyboard-configuration/variant=USA<wait>",
-                " console-setup/ask_detect=false<wait>",
-                " initrd=/install/initrd.gz<wait>",
-                " net.ifnames=0<wait>",
-                " -- <wait>",
-                "<enter><wait>"
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+                "hostname={{ .Name }} ",
+                "fb=false debconf/frontend=noninteractive ",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+                "initrd=/install/initrd.gz -- <enter>"
             ],
             "boot_wait": "10s",
             "disk_size": 8192,
-            "guest_os_type": "Ubuntu",
+            "guest_os_type": "Ubuntu-64",
             "http_directory": "http",
             "iso_checksum": "{{ user `iso_checksum`}}",
             "iso_checksum_type": "{{ user `iso_checksum_type` }}",
@@ -165,7 +121,7 @@
     "post-processors": [
         [{
             "type": "vagrant",
-            "output": "ubuntu15.10-64_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
+            "output": "ubuntu15.04-64_{{.BuildName}}_{{.Provider}}_{{ user `version`}}.box",
             "keep_input_artifact": false
         },
         {
@@ -176,7 +132,7 @@
             "artifact_type": "vagrant.box",
             "metadata": {
                 "provider": "vmware_desktop",
-                "description": "Base Ubuntu Wily with guest addition (32bit)",
+                "description": "Base Ubuntu Vivid with guest addition (64bit)",
                 "version": "{{user `version`}}"
             }
         },
@@ -188,7 +144,7 @@
             "artifact_type": "vagrant.box",
             "metadata": {
                 "provider": "libvirt",
-                "description": "Base Ubuntu Wily (32bit)",
+                "description": "Base Ubuntu Vivid (64bit)",
                 "version": "{{user `version`}}"
             }
         },
@@ -200,7 +156,7 @@
             "artifact_type": "vagrant.box",
             "metadata": {
                 "provider": "virtualbox",
-                "description": "Base Ubuntu Wily with guest addition for VirtualBox (32bit)",
+                "description": "Base Ubuntu Vivid with guest addition for VirtualBox (64bit)",
                 "version": "{{user `version`}}"
             }
         }]
